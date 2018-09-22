@@ -1,11 +1,17 @@
-import requests as req
-from BeautifulSoup import BeautifulSoup
+import requests
+import json
+import apikey
 
-headers={'User-Agent':'test'}
-response = req.get("https://www.uofrathletics.com/", headers=headers)
-html = response.content
-print html
+url = "https://www.alphavantage.co/query"
 
-# soup = BeautifulSoup(html)
+data = {
+	'function': 'TIME_SERIES_INTRADAY',
+	'symbol': '^GSPC',
+	'interval': '1min',
+	'apikey': apikey.API_KEY,
+}
 
-# print soup.prettify()
+response = requests.get(url, params=data)
+
+print response.url
+print response.content
