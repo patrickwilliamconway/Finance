@@ -1,17 +1,18 @@
-import requests
-import json
 import apikey
+import json
+from alpha_vantage.timeseries import TimeSeries
+from pprint import pprint 
+import matplotlib.pyplot as plt
 
-url = "https://www.alphavantage.co/query"
+ts = TimeSeries(key=apikey.API_KEY, output_format="pandas")
+data, meta_data = ts.get_intraday(symbol="^GSPC", interval="1min",outputsize="full")
 
-data = {
-	'function': 'TIME_SERIES_INTRADAY',
-	'symbol': '^GSPC',
-	'interval': '1min',
-	'apikey': apikey.API_KEY,
-}
+# with open('data.json', 'w+') as outfile:
+# 	json.dump(data, outfile)
 
-response = requests.get(url, params=data)
+print data[0::(2*8)]
 
-print response.url
-print response.content
+data["4. close"].plot()
+plt.xticks(range(len(data))[0::(2*8)])
+plt.title('Intraday Times Series for the S&P500 (1 min intervals)')
+plt.show()
